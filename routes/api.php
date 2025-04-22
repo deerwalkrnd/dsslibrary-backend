@@ -2,11 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\GoogleAuthController;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
 
-Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirect'])->name('auth.google.redirect');
-Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
-Route::post('/logout', [GoogleAuthController::class, 'logout'])->name('logout');
+RateLimiter::for('api', function ($request) {
+    return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+});
+
+Route::get('/auth/google/redirect', [AuthController::class, 'redirect'])->name('auth.google.redirect');
+Route::get('/auth/google/callback', [AuthController::class, 'callback'])->name('auth.google.callback');
+Route::post('/logout', [AuthController::class, 'googleLogout'])->name('logout');
 
 Route::post('/auth/login', [AuthController::class, 'login']);
 

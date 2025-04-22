@@ -1,37 +1,55 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Repositories\Contracts\AuthRepositoryInterface;
+
+use App\Http\Requests\Auth\ChangePasswordRequest;
+use App\Http\Requests\Auth\GoogleAuthRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    protected $authRepo;
-    protected $userRepo;
+    protected UserService $userService;
 
-    public function __construct(
-        AuthRepositoryInterface $authRepo,
-    ) {
-        $this->authRepo = $authRepo;
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        return $this->authRepo->register($request);
+        return $this->userService->register($request);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        return $this->authRepo->login($request);
+        return $this->userService->login($request);
     }
 
-    public function changePassword(Request $request)
+    public function changePassword(ChangePasswordRequest $request)
     {
-        return $this->authRepo->changePassword($request);
+        return $this->userService->changePassword($request);
     }
 
-    public function userlogout(Request $request)
+    public function userLogout(Request $request)
     {
-        return $this->authRepo->logout($request);
+        return $this->userService->logout($request);
+    }
+
+    public function redirect()
+    {
+        return $this->userService->redirectToGoogle();
+    }
+
+    public function callback(GoogleAuthRequest $request)
+    {
+        return $this->userService->handleGoogleCallback($request);
+    }
+
+    public function googleLogout()
+    {
+        return $this->userService->googleLogout();
     }
 }
