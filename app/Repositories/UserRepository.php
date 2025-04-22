@@ -25,7 +25,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function updatePassword(User $user, string $newPassword): void
     {
-        $user->password = bcrypt($newPassword);
+        $user->password =$newPassword;
         $user->change_password_status = true;
         $user->save();
     }

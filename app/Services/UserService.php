@@ -6,7 +6,6 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\GoogleAuthRequest;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Throwable;
@@ -15,7 +14,7 @@ use Illuminate\Http\Request;
 
 class UserService
 {
-    public function __construct(protected UserRepositoryInterface $authRepository)
+    public function __construct(protected UserRepositoryInterface $userRepository)
     {
     }
 
@@ -23,9 +22,9 @@ class UserService
     {
         $data = $request->validated();
 
-        $user = $this->authRepository->createUser([
+        $user = $this->userRepository->createUser([
             'roll_number' => $data['roll_number'],
-            'password'    => Hash::make($data['password'] ?? 'password'),
+            'password'    => $data['password'] ?? 'password',
             'role'        => $data['role'] ?? 'student',
         ]);
 
@@ -33,16 +32,15 @@ class UserService
 
         return response()->json([
             'message' => 'User registered successfully.',
-            'token'   => $token,
         ]);
     }
 
     public function login(LoginRequest $request)
     {
         $fields = $request->validated();
-        $user = $this->authRepository->getUserForLogin($fields);
+        $user = $this->userRepository->getUserForLogin($fields);
 
-        if (!$user || !Hash::check($fields['password'], $user->password)) {
+        if (!$user || $fields['password']== $user->password) {
             return response(['message' => 'Wrong credentials'], 401);
         }
 
@@ -60,7 +58,7 @@ class UserService
         $request->validated();
         $user = Auth::user();
 
-        if (!Hash::check($request->current_password, $user->password)) {
+        if ($request->current_password== $user->password) {
             return response()->json(['message' => 'Current password is incorrect.'], 403);
         }
 
@@ -68,7 +66,7 @@ class UserService
             return response()->json(['message' => 'New password should not be same as current password.']);
         }
 
-        $this->authRepository->updatePassword($user, $request->new_password);
+        $this->userRepository->updatePassword($user, $request->new_password);
 
         return response()->json(['message' => 'Password changed successfully.']);
     }
@@ -91,7 +89,7 @@ class UserService
             $googleUser = Socialite::driver('google')->user();
             $request->validateGoogleUser($googleUser);
 
-            $user = $this->authRepository->getOrCreateGoogleUser($googleUser);
+            $user = $this->userRepository->getOrCreateGoogleUser($googleUser);
             Auth::login($user);
 
             $token = $user->createToken('auth_token')->plainTextToken;
