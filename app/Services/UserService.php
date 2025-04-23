@@ -40,10 +40,9 @@ class UserService
         $fields = $request->validated();
         $user = $this->userRepository->getUserForLogin($fields);
 
-        if (!$user || $fields['password']== $user->password) {
+        if (!$user || $fields['password'] !== $user->password) {
             return response(['message' => 'Wrong credentials'], 401);
         }
-
         $token = $user->createToken('my-token')->plainTextToken;
 
         return response()->json([
@@ -58,7 +57,7 @@ class UserService
         $request->validated();
         $user = Auth::user();
 
-        if ($request->current_password== $user->password) {
+        if ($request->current_password!= $user->password) {
             return response()->json(['message' => 'Current password is incorrect.'], 403);
         }
 
