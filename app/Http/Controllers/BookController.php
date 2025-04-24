@@ -18,8 +18,7 @@ class BookController extends Controller
     public function index(Request $request)
     {
         //
-        $perPage = $request->get('per_page', 10);
-        return $this->bookService->all();
+        return $this->bookService->all($request);
     }
 
     /**

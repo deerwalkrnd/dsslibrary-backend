@@ -5,6 +5,7 @@ use App\Http\Requests\CheckInRequest;
 use App\Http\Requests\CheckOutRequest;
 use App\Repositories\Contracts\BorrowBookRepositoryInterface;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -56,25 +57,27 @@ class BorrowBookService
             return response()->json(['message' => 'Unexpected error during check-in'], 500);
         }
     }
-    public function myBooks()
+    public function myBooks(Request $request)
     {
         try {
+            $perPage = (int) $request->get('perPage',10);
             $userId = Auth::id();
             if (!$userId) {
                 return response()->json(['message' => 'Unauthorized'], 401);
             }
     
-            $books = $this->borrowBookRepository->getBooksBorrowedByUser($userId);
+            $books = $this->borrowBookRepository->getBooksBorrowedByUser($userId,$perPage);
             return response()->json($books);
         } catch (Exception $e) {
             Log::error("Error getting books for user {$userId}: " . $e->getMessage());
             return response()->json(['message' => 'Could not fetch books'], 500);
         }
     }
-    public function allBooks()
+    public function allBooks(Request $request)
     {
         try {
-            $books = $this->borrowBookRepository->getBooksBorrowed();
+            $perPage = (int) $request->get('perPage',10);
+            $books = $this->borrowBookRepository->getBooksBorrowed($perPage);
             return response()->json($books);
         } catch (Exception $e) {
             Log::error("Error getting books " . $e->getMessage());

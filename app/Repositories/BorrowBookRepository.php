@@ -35,15 +35,15 @@ class BorrowBookRepository implements BorrowBookRepositoryInterface
         $BorrowRecord = BorrowRecord::find($id);
         return $BorrowRecord;
     }
-    public function getBooksBorrowedByUser(int $userId)
+    public function getBooksBorrowedByUser(int $userId,int $perPage=10)
     {
         return BorrowRecord::with('book')
             ->where('user_id', $userId)
-            ->get();
+            ->paginate($perPage);
     }
-    public function getBooksBorrowed()
+    public function getBooksBorrowed(int $perPage=10)
     {
         return BorrowRecord::with('book')
-            ->get();
+            ->paginate($perPage);
     }
 }

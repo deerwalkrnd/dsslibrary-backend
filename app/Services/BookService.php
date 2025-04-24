@@ -77,9 +77,10 @@ class BookService
         }
     }
 
-    public function all($perPage=10)
+    public function all(Request $request)
 {
     try {
+        $perPage = (int) $request->get('perPage',10);
         return response()->json($this->bookRepository->paginate($perPage));
     } catch (Exception $e) {
         Log::error('Error fetching books: ' . $e->getMessage());

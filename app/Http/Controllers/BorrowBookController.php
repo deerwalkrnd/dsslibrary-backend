@@ -23,10 +23,10 @@ class BorrowBookController extends Controller
     {
         return $this->borrowBookService->checkin($request,$id);
     }
-    public function myBooks(){
-        return $this->borrowBookService->mybooks();
+    public function myBooks(Request $request){
+        return $this->borrowBookService->mybooks($request);
     }
-    public function allBooks(){
-        return $this->borrowBookService->allbooks();
+    public function allBooks(Request $request){
+        return $this->borrowBookService->allbooks($request);
     }
 }
