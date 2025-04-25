@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,3 +14,6 @@ Route::get('/dashboard', function () {
 Route::get('/csrf-token', function () {
     return response()->json(['token' => csrf_token()]);
 });
+Route::get('/auth/google/redirect', [AuthController::class, 'redirect'])->name('auth.google.redirect');
+Route::get('/auth/google/callback', [AuthController::class, 'callback'])->name('auth.google.callback');
+Route::post('/logout', [AuthController::class, 'googleLogout'])->name('logout');

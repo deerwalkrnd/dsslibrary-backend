@@ -46,4 +46,8 @@ class UserRepository implements UserRepositoryInterface
             'email_verified_at' => now(),
         ]);
     }
+    public function findById(string $id){
+        $User=User::find($id);
+        return $User;
+    }
 }

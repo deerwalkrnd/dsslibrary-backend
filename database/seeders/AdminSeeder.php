@@ -16,6 +16,7 @@ class AdminSeeder extends Seeder
         //
         User::create(
             [
+            'name'=>'Admin',
             'email' => 'admin@gmail.com',
             'password' => 'password',
             'change_password_status'=>1,
