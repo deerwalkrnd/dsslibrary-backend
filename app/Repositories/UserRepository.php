@@ -47,7 +47,7 @@ class UserRepository implements UserRepositoryInterface
         ]);
     }
     public function findById(string $id){
-        $User=User::find($id);
-        return $User;
+        $user=User::find($id);
+        return $user;
     }
 }

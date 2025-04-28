@@ -20,22 +20,22 @@ class BookRepository implements BookRepositoryInterface
 
     public function update(array $data, int $id): bool
     {
-        $Book = Book::findOrFail($id);
+        $book = Book::findOrFail($id);
 
-        return $Book->update($data);
+        return $book->update($data);
     }
 
     public function delete(int $id): bool
     {
-        $Book = Book::findOrFail($id);
+        $book = Book::findOrFail($id);
 
-        return $Book->delete();
+        return $book->delete();
     }
 
     public function find(int $id): ?Book
     {
-        $Book=Book::find($id);
-        return $Book;
+        $book=Book::find($id);
+        return $book;
     }
 
     public function paginate(int $perPage = 10):LengthAwarePaginator

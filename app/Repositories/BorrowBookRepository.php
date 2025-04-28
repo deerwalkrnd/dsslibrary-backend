@@ -19,21 +19,21 @@ class BorrowBookRepository implements BorrowBookRepositoryInterface
 
     public function update(array $data, int $id): bool
     {
-        $BorrowRecord = BorrowRecord::findOrFail($id);
-        return $BorrowRecord->update($data);
+        $borrowRecord = BorrowRecord::findOrFail($id);
+        return $borrowRecord->update($data);
     }
 
     public function delete(int $id): bool
     {
-        $BorrowRecord = BorrowRecord::findOrFail($id);
+        $borrowRecord = BorrowRecord::findOrFail($id);
 
-        return $BorrowRecord->delete();
+        return $borrowRecord->delete();
     }
 
     public function find(int $id): ?BorrowRecord
     {
-        $BorrowRecord = BorrowRecord::find($id);
-        return $BorrowRecord;
+        $borrowRecord = BorrowRecord::find($id);
+        return $borrowRecord;
     }
     public function getBooksBorrowedByUser(int $userId,int $perPage=10)
     {

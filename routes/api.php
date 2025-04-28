@@ -24,10 +24,10 @@ Route::middleware(['auth:sanctum', 'restrictRole:admin'])->group(function () {
 
     Route::resource('books',BookController::class)->names('books')->except('index');
 
-    Route::post('/borrow/checkout', [BorrowBookController::class, 'checkout']);
-    Route::post('/borrow/checkin/{id}', [BorrowBookController::class, 'checkin']);
-    Route::get('/borrow-records/user', [BorrowBookController::class, 'allBooks']);
+    Route::post('/borrow/checkout', [BorrowBookController::class, 'checkout'])->name('checkout');
+    Route::post('/borrow/checkin/{id}', [BorrowBookController::class, 'checkin'])->name('checkin');
+    Route::get('/borrow-records', [BorrowBookController::class, 'allBooks'])->name('allBooks');
 });
 
 Route::get('/books',[BookController::class,'index'])->name('books.get');
-Route::middleware(['auth:sanctum'])->get('/borrow-records/my-user', [BorrowBookController::class, 'myBooks']);
+Route::middleware(['auth:sanctum'])->get('/borrow-records/my-user',[BorrowBookController::class, 'myBooks'])->name('myBooks');
