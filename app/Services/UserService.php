@@ -55,11 +55,7 @@ class UserService
     public function changePassword(ChangePasswordRequest $request)
     {
         $request->validated();
-        $user = Auth::user();
-
-        if ($request->current_password!= $user->password) {
-            return response()->json(['message' => 'Current password is incorrect.'], 403);
-        }
+        $user = $this->userRepository->findById($request->user_id);
 
         if ($request->new_password === $request->current_password) {
             return response()->json(['message' => 'New password should not be same as current password.']);
@@ -85,10 +81,12 @@ class UserService
     public function handleGoogleCallback(GoogleAuthRequest $request)
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
+            $googleUser=Socialite::driver('google')->user();
+            
             $request->validateGoogleUser($googleUser);
-
+            
             $user = $this->userRepository->getOrCreateGoogleUser($googleUser);
+
             Auth::login($user);
 
             $token = $user->createToken('auth_token')->plainTextToken;

@@ -23,6 +23,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             //
+            'name'=>'required',
             'email'=>'email',
             'password'=>'string',
             'roll_number'=>'string',
