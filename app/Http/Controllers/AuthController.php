@@ -28,6 +28,11 @@ class AuthController extends Controller
         return $this->userService->login($request);
     }
 
+    public function showStudents()
+    {
+        return $this->userService->showStudents();
+    }
+
     public function changePassword(ChangePasswordRequest $request)
     {
         return $this->userService->changePassword($request);

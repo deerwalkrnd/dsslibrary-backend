@@ -23,6 +23,11 @@ class UserRepository implements UserRepositoryInterface
             : User::where('email', $fields['email'])->first();
     }
 
+    public function get(){
+        $users=User::where('role','student')->get();
+        return $users;
+    }
+
     public function updatePassword(User $user, string $newPassword): void
     {
         $user->password =$newPassword;
