@@ -52,6 +52,11 @@ class UserService
         ]);
     }
 
+    public function showStudents(){
+        $user=$this->userRepository->get();
+        return response()->json($user);
+    }
+
     public function changePassword(ChangePasswordRequest $request)
     {
         $request->validated();

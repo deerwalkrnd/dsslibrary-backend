@@ -21,6 +21,7 @@ Route::middleware(['auth:sanctum', 'restrictRole:admin'])->group(function () {
     Route::post('/change-password', [AuthController::class, 'changePassword']);
     Route::post('/auth/register', [AuthController::class, 'register']);
     Route::get('/users', [AuthController::class, 'show']);
+    Route::get('/students', [AuthController::class, 'showStudents']);
 
     Route::resource('books',BookController::class)->names('books')->except('index');
 

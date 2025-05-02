@@ -11,4 +11,5 @@ interface UserRepositoryInterface
     public function updatePassword(User $user, string $newPassword): void;
     public function getOrCreateGoogleUser($googleUser): User;
     public function findById(string $id);
+    public function get();
 }
