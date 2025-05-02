@@ -23,6 +23,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'restrictRole'     => \App\Http\Middleware\CheckRole::class,
             'password.changed' => \App\Http\Middleware\EnsurePasswordChanged::class,
         ]);
+
+        $middleware->validateCsrfTokens(except:[
+            'api/*'
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
