@@ -24,6 +24,7 @@ class UserService
         $data = $request->validated();
 
         $user = $this->userRepository->createUser([
+            'name'=>$data['name'],
             'roll_number' => $data['roll_number'],
             'password'    => $data['password'] ?? 'password',
             'role'        => $data['role'] ?? 'student',
