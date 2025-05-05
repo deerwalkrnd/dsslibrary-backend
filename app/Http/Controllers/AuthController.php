@@ -26,7 +26,7 @@ class AuthController extends Controller
     {
         return $this->userService->edit($request);
     }
-    public function deleteStudent(RegisterRequest $request)
+    public function deleteStudent(Request $request)
     {
         return $this->userService->delete($request);
     }
