@@ -26,7 +26,7 @@ class BookRequest extends FormRequest
             'author'    => 'nullable|string|max:255',
             'isbn'      => 'nullable|string|max:255',
             'remaining' => 'integer',
-            'uuid'=>'required',
+            'uuid'=>'nullable|uuid',
             'status'    => 'in:available,borrowed',
         ];
     }

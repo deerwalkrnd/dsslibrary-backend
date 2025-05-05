@@ -9,6 +9,7 @@ use Illuminate\Database\QueryException;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class BookService
 {
@@ -21,6 +22,7 @@ class BookService
     {
         try {
             $data = $request->validated();
+            $data['uuid'] = Str::uuid()->toString();
             $book = $this->bookRepository->create($data);
 
             if (!$book) {

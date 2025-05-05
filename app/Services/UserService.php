@@ -11,6 +11,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Throwable;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UserService
 {
@@ -23,6 +24,7 @@ class UserService
         $data = $request->validated();
 
         $user = $this->userRepository->createUser([
+            'name'=>$data['name'],
             'roll_number' => $data['roll_number'],
             'password'    => $data['password'] ?? 'password',
             'role'        => $data['role'] ?? 'student',
@@ -81,6 +83,38 @@ class UserService
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
+    }
+
+    public function edit($request)
+    {
+        $user = $this->userRepository->findById($request->id);
+
+        if (!$user) {
+            Log::warning('User not found for edit', ['id' => $request->id]);
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $updatedUser = $this->userRepository->update($user, $request->only(['name', 'email', 'password', 'roll_number']));
+
+        Log::info('User updated', ['id' => $updatedUser->id]);
+
+        return response()->json(['message' => 'User updated successfully', 'user' => $updatedUser]);
+    }
+
+    public function delete($request)
+    {
+        $user = $this->userRepository->findById($request->id);
+
+        if (!$user) {
+            Log::warning('User not found for delete', ['id' => $request->id]);
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $this->userRepository->delete($user);
+
+        Log::info('User deleted', ['id' => $request->id]);
+
+        return response()->json(['message' => 'User deleted successfully']);
     }
 
     public function handleGoogleCallback(GoogleAuthRequest $request)

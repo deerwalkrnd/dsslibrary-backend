@@ -23,6 +23,9 @@ Route::middleware(['auth:sanctum', 'restrictRole:admin'])->group(function () {
     Route::get('/users', [AuthController::class, 'show']);
     Route::get('/students', [AuthController::class, 'showStudents']);
 
+    Route::put('/students/{id}', [AuthController::class, 'editStudent'])->name('students.update');
+    Route::delete('/students/{id}', [AuthController::class, 'deleteStudent'])->name('students.destroy');
+
     Route::resource('books',BookController::class)->names('books')->except('index');
 
     Route::post('/borrow/checkout', [BorrowBookController::class, 'checkout'])->name('checkout');
