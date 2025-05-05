@@ -40,6 +40,6 @@ class BookRepository implements BookRepositoryInterface
 
     public function paginate(int $perPage = 10):LengthAwarePaginator
 {
-    return Book::paginate($perPage);
+    return Book::orderBy('created_at', 'desc')->paginate($perPage);
 }
 }
