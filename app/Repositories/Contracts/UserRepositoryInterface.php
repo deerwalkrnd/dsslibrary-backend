@@ -12,4 +12,6 @@ interface UserRepositoryInterface
     public function getOrCreateGoogleUser($googleUser): User;
     public function findById(string $id);
     public function get();
+    public function update($user, array $data);
+    public function delete($user);
 }
