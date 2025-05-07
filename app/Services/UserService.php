@@ -122,7 +122,7 @@ class UserService
     public function handleGoogleCallback(GoogleAuthRequest $request)
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
+            $googleUser = Socialite::driver('google')->stateless()->user();
 
             $request->validateGoogleUser($googleUser);
 
@@ -132,13 +132,15 @@ class UserService
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Login successful',
-                'user' => $user,
+            $frontendRedirect = 'http://localhost:3000/api/auth/google/callback?' . http_build_query([
                 'token' => $token,
+                'user' => json_encode($user),
+                
             ]);
+    
+            return redirect()->away($frontendRedirect);
         } catch (Throwable $e) {
+            Log::error($e);
             return response()->json([
                 'success' => false,
                 'message' => 'Google authentication failed.',
