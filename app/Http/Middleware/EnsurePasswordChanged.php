@@ -18,7 +18,7 @@ class EnsurePasswordChanged
     {
         $user = Auth::user();
 
-        if ($user && !$user->change_password_status) {
+        if ($user && ! $user->change_password_status) {
             return response()->json([
                 'message' => 'You must change your password before accessing other resources.',
             ], 403);

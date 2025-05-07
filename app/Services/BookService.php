@@ -1,12 +1,12 @@
 <?php
+
 namespace App\Services;
 
 use App\Http\Requests\BookRequest;
 use App\Repositories\Contracts\BookRepositoryInterface;
-use App\Repositories\Contracts\BorrowBookRepositoryInterface;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -15,8 +15,7 @@ class BookService
 {
     public function __construct(
         protected BookRepositoryInterface $bookRepository
-    ) {
-    }
+    ) {}
 
     public function create(BookRequest $request)
     {
@@ -25,17 +24,19 @@ class BookService
             $data['uuid'] = Str::uuid()->toString();
             $book = $this->bookRepository->create($data);
 
-            if (!$book) {
+            if (! $book) {
                 return response()->json(['message' => 'Book creation failed'], 500);
             }
 
             return response()->json($book, 201);
 
         } catch (QueryException $e) {
-            Log::error('Database error during book creation: ' . $e->getMessage());
+            Log::error('Database error during book creation: '.$e->getMessage());
+
             return response()->json(['message' => $e->getMessage()], 500);
         } catch (Exception $e) {
-            Log::error('Unexpected error during book creation: ' . $e->getMessage());
+            Log::error('Unexpected error during book creation: '.$e->getMessage());
+
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
@@ -46,7 +47,7 @@ class BookService
             $data = $request->validated();
             $book = $this->bookRepository->update($data, $id);
 
-            if (!$book) {
+            if (! $book) {
                 return response()->json(['message' => 'Update failed'], 500);
             }
 
@@ -55,7 +56,8 @@ class BookService
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Book not found'], 404);
         } catch (Exception $e) {
-            Log::error('Error updating book: ' . $e->getMessage());
+            Log::error('Error updating book: '.$e->getMessage());
+
             return response()->json(['message' => 'Unexpected error'], 500);
         }
     }
@@ -65,7 +67,7 @@ class BookService
         try {
             $deleted = $this->bookRepository->delete($id);
 
-            if (!$deleted) {
+            if (! $deleted) {
                 return response()->json(['message' => 'Delete failed'], 500);
             }
 
@@ -74,34 +76,38 @@ class BookService
         } catch (ModelNotFoundException $e) {
             return response()->json(['message' => 'Book not found'], 404);
         } catch (Exception $e) {
-            Log::error('Error deleting book: ' . $e->getMessage());
+            Log::error('Error deleting book: '.$e->getMessage());
+
             return response()->json(['message' => 'Unexpected error'], 500);
         }
     }
 
     public function all(Request $request)
-{
-    try {
-        $perPage = (int) $request->get('perPage',10);
-        return response()->json($this->bookRepository->paginate($perPage));
-    } catch (Exception $e) {
-        Log::error('Error fetching books: ' . $e->getMessage());
-        return response()->json(['message' => 'Could not fetch books'], 500);
+    {
+        try {
+            $perPage = (int) $request->get('perPage', 10);
+
+            return response()->json($this->bookRepository->paginate($perPage));
+        } catch (Exception $e) {
+            Log::error('Error fetching books: '.$e->getMessage());
+
+            return response()->json(['message' => 'Could not fetch books'], 500);
+        }
     }
-}
 
     public function find(int $id)
     {
         try {
             $book = $this->bookRepository->find($id);
 
-            if (!$book) {
+            if (! $book) {
                 return response()->json(['message' => 'Book not found'], 404);
             }
 
             return response()->json($book, 200);
         } catch (Exception $e) {
-            Log::error('Error fetching book: ' . $e->getMessage());
+            Log::error('Error fetching book: '.$e->getMessage());
+
             return response()->json(['message' => 'Unexpected error'], 500);
         }
     }

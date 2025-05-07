@@ -16,5 +16,6 @@ interface BookRepositoryInterface
     public function delete(int $id): bool;
 
     public function find(int $id): ?Book;
-    public function paginate(int $perPage=10):LengthAwarePaginator;
+
+    public function paginate(int $perPage = 10): LengthAwarePaginator;
 }

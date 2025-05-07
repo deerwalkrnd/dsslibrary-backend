@@ -34,12 +34,13 @@ class BookRepository implements BookRepositoryInterface
 
     public function find(int $id): ?Book
     {
-        $book=Book::find($id);
+        $book = Book::find($id);
+
         return $book;
     }
 
-    public function paginate(int $perPage = 10):LengthAwarePaginator
-{
-    return Book::orderBy('created_at', 'desc')->paginate($perPage);
-}
+    public function paginate(int $perPage = 10): LengthAwarePaginator
+    {
+        return Book::orderBy('created_at', 'desc')->paginate($perPage);
+    }
 }

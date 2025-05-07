@@ -9,13 +9,16 @@ class BorrowRecord extends Model
 {
     //
     use HasFactory;
+
     protected $fillable = ['user_id', 'book_id', 'checkout_date', 'checkin_date'];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function book() {
+    public function book()
+    {
         return $this->belongsTo(Book::class);
     }
 }
