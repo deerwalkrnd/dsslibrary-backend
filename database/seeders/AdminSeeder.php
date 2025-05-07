@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -16,12 +15,12 @@ class AdminSeeder extends Seeder
         //
         User::create(
             [
-            'name'=>'Admin',
-            'email' => 'admin@gmail.com',
-            'password' => 'password',
-            'change_password_status'=>1,
-            'role' => 'admin',
+                'name' => 'Admin',
+                'email' => 'admin@gmail.com',
+                'password' => 'password',
+                'change_password_status' => 1,
+                'role' => 'admin',
             ]
-            );
+        );
     }
 }

@@ -18,12 +18,12 @@ class BookFactory extends Factory
     {
         return [
             //
-            'title'     => $this->faker->sentence(3), // random 3-word title
-            'author'    => $this->faker->name(),       // random author name
-            'isbn'      => $this->faker->isbn13(),     // random ISBN-13
+            'title' => $this->faker->sentence(3), // random 3-word title
+            'author' => $this->faker->name(),       // random author name
+            'isbn' => $this->faker->isbn13(),     // random ISBN-13
             'remaining' => $this->faker->numberBetween(0, 100),
-            'uuid'=>$this->faker->numberBetween(0, 100),
-            'status'    => 'available',
+            'uuid' => $this->faker->numberBetween(0, 100),
+            'status' => 'available',
         ];
     }
 }

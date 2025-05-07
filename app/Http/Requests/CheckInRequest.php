@@ -23,7 +23,7 @@ class CheckInRequest extends FormRequest
     {
         return [
             //
-            'checkin_date'=>'required'
+            'checkin_date' => 'required',
         ];
     }
 }

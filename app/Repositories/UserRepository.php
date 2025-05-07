@@ -10,7 +10,7 @@ class UserRepository implements UserRepositoryInterface
 {
     public function createUser(array $data): User
     {
-        $user = new User();
+        $user = new User;
         $user->forceFill($data)->save();
 
         return $user;
@@ -23,14 +23,16 @@ class UserRepository implements UserRepositoryInterface
             : User::where('email', $fields['email'])->first();
     }
 
-    public function get(){
-        $users=User::where('role','student')->get();
+    public function get()
+    {
+        $users = User::where('role', 'student')->get();
+
         return $users;
     }
 
     public function updatePassword(User $user, string $newPassword): void
     {
-        $user->password =$newPassword;
+        $user->password = $newPassword;
         $user->change_password_status = true;
         $user->save();
     }
@@ -44,21 +46,31 @@ class UserRepository implements UserRepositoryInterface
         }
 
         return User::create([
-            'email'             => $googleUser->email,
-            'name'              => $googleUser->name,
-            'role'              => 'student',
-            'password'          => bcrypt(Str::random(16)),
+            'email' => $googleUser->email,
+            'name' => $googleUser->name,
+            'role' => 'student',
+            'password' => bcrypt(Str::random(16)),
             'email_verified_at' => now(),
         ]);
     }
-    public function findById(string $id){
-        $user=User::find($id);
+
+    public function findById(string $id)
+    {
+        $user = User::find($id);
+
         return $user;
     }
 
     public function update($user, array $data)
     {
+        if (isset($data['password']) && ! empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
         $user->update($data);
+
         return $user;
     }
 

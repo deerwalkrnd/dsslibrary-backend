@@ -2,32 +2,30 @@
 
 namespace App\Services;
 
-use App\Http\Requests\Auth\RegisterRequest;
-use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\GoogleAuthRequest;
-use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
-use Throwable;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Laravel\Socialite\Facades\Socialite;
+use Throwable;
 
 class UserService
 {
-    public function __construct(protected UserRepositoryInterface $userRepository)
-    {
-    }
+    public function __construct(protected UserRepositoryInterface $userRepository) {}
 
     public function register(RegisterRequest $request)
     {
         $data = $request->validated();
 
         $user = $this->userRepository->createUser([
-            'name'=>$data['name'],
+            'name' => $data['name'],
             'roll_number' => $data['roll_number'],
-            'password'    => $data['password'] ?? 'password',
-            'role'        => $data['role'] ?? 'student',
+            'password' => $data['password'] ?? 'password',
+            'role' => $data['role'] ?? 'student',
         ]);
 
         $token = $user->createToken('my-token')->plainTextToken;
@@ -42,20 +40,22 @@ class UserService
         $fields = $request->validated();
         $user = $this->userRepository->getUserForLogin($fields);
 
-        if (!$user || $fields['password'] !== $user->password) {
+        if (! $user || $fields['password'] !== $user->password) {
             return response(['message' => 'Wrong credentials'], 401);
         }
         $token = $user->createToken('my-token')->plainTextToken;
 
         return response()->json([
             'token' => $token,
-            'Type'  => 'Bearer',
-            'role'  => $user->role,
+            'Type' => 'Bearer',
+            'role' => $user->role,
         ]);
     }
 
-    public function showStudents(){
-        $user=$this->userRepository->get();
+    public function showStudents()
+    {
+        $user = $this->userRepository->get();
+
         return response()->json($user);
     }
 
@@ -89,8 +89,9 @@ class UserService
     {
         $user = $this->userRepository->findById($request->id);
 
-        if (!$user) {
+        if (! $user) {
             Log::warning('User not found for edit', ['id' => $request->id]);
+
             return response()->json(['message' => 'User not found'], 404);
         }
 
@@ -105,8 +106,9 @@ class UserService
     {
         $user = $this->userRepository->findById($request->id);
 
-        if (!$user) {
+        if (! $user) {
             Log::warning('User not found for delete', ['id' => $request->id]);
+
             return response()->json(['message' => 'User not found'], 404);
         }
 
@@ -120,10 +122,10 @@ class UserService
     public function handleGoogleCallback(GoogleAuthRequest $request)
     {
         try {
-            $googleUser=Socialite::driver('google')->user();
-            
+            $googleUser = Socialite::driver('google')->user();
+
             $request->validateGoogleUser($googleUser);
-            
+
             $user = $this->userRepository->getOrCreateGoogleUser($googleUser);
 
             Auth::login($user);
@@ -133,14 +135,14 @@ class UserService
             return response()->json([
                 'success' => true,
                 'message' => 'Login successful',
-                'user'    => $user,
-                'token'   => $token,
+                'user' => $user,
+                'token' => $token,
             ]);
         } catch (Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Google authentication failed.',
-                'error'   => $e->getMessage(),
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
@@ -150,6 +152,7 @@ class UserService
         Auth::logout();
         request()->session()->invalidate();
         request()->session()->regenerateToken();
+
         return redirect('/');
     }
 }

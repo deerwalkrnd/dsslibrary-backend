@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Repositories;
 
-use App\Models\Book;
 use App\Models\BorrowRecord;
 use App\Repositories\Contracts\BorrowBookRepositoryInterface;
 
@@ -20,6 +20,7 @@ class BorrowBookRepository implements BorrowBookRepositoryInterface
     public function update(array $data, int $id): bool
     {
         $borrowRecord = BorrowRecord::findOrFail($id);
+
         return $borrowRecord->update($data);
     }
 
@@ -33,15 +34,18 @@ class BorrowBookRepository implements BorrowBookRepositoryInterface
     public function find(int $id): ?BorrowRecord
     {
         $borrowRecord = BorrowRecord::find($id);
+
         return $borrowRecord;
     }
-    public function getBooksBorrowedByUser(int $userId,int $perPage=10)
+
+    public function getBooksBorrowedByUser(int $userId, int $perPage = 10)
     {
         return BorrowRecord::with('book')
             ->where('user_id', $userId)
             ->paginate($perPage);
     }
-    public function getBooksBorrowed(int $perPage=10)
+
+    public function getBooksBorrowed(int $perPage = 10)
     {
         return BorrowRecord::with('book')
             ->paginate($perPage);

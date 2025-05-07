@@ -6,6 +6,7 @@ use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\GoogleAuthRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\UpdateStudentRequest;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
@@ -22,10 +23,12 @@ class AuthController extends Controller
     {
         return $this->userService->register($request);
     }
-    public function editStudent(RegisterRequest $request, )
+
+    public function editStudent(UpdateStudentRequest $request)
     {
         return $this->userService->edit($request);
     }
+
     public function deleteStudent(Request $request)
     {
         return $this->userService->delete($request);

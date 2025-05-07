@@ -25,7 +25,7 @@ class CheckOutRequest extends FormRequest
             //
             'book_id' => 'required|exists:books,id',
             'user_id' => 'required|exists:users,id',
-            'checkout_date'=>'required'
+            'checkout_date' => 'required',
         ];
     }
 }
