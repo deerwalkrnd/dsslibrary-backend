@@ -64,7 +64,7 @@ class UserRepository implements UserRepositoryInterface
     public function update($user, array $data)
     {
         if (isset($data['password']) && ! empty($data['password'])) {
-            $data['password'] = Hash::make($data['password']);
+            $data['password'] = bcrypt($data['password']);
         } else {
             unset($data['password']);
         }
