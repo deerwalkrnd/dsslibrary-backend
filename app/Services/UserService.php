@@ -85,7 +85,7 @@ class UserService
         return Socialite::driver('google')->redirect();
     }
 
-    public function edit($request)
+    public function edit(RegisterRequest $request)
     {
         $user = $this->userRepository->findById($request->id);
 
@@ -94,7 +94,7 @@ class UserService
             return response()->json(['message' => 'User not found'], 404);
         }
 
-        $updatedUser = $this->userRepository->update($user, $request->only(['name', 'email', 'password', 'roll_number']));
+        $updatedUser = $this->userRepository->update($user, $request->validated());
 
         Log::info('User updated', ['id' => $updatedUser->id]);
 

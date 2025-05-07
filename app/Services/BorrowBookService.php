@@ -41,10 +41,14 @@ class BorrowBookService
         try {
             $data   = $request->validated();
             $record = $this->borrowBookRepository->find($id);
-
+            $book=$record->book;
+            $book->remaining += 1;
+            $book->status = 'available';
+            $book->save();
             if (! $record || $record->checkin_date) {
                 return response()->json(['message' => 'Invalid or already returned'], 400);
             }
+            
             $updated = $this->borrowBookRepository->update($data, $id);
 
             if (! $updated) {
