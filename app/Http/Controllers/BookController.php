@@ -10,10 +10,10 @@ class BookController extends Controller
 {
     public function __construct(
         protected BookService $bookService
-    ) {
-    }
+    ) {}
+
     /**
-     * Display a listing of the resource.
+     * getMany Books
      */
     public function index(Request $request)
     {
@@ -22,7 +22,7 @@ class BookController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * create Book
      */
     public function create()
     {
@@ -30,7 +30,7 @@ class BookController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * post Book
      */
     public function store(BookRequest $request)
     {
@@ -39,7 +39,7 @@ class BookController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * findOne Book
      */
     public function show(string $id)
     {
@@ -48,7 +48,7 @@ class BookController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * updateBook
      */
     public function edit(string $id)
     {
@@ -57,16 +57,16 @@ class BookController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * update Book
      */
     public function update(BookRequest $request, string $id)
     {
         //
-        return $this->bookService->update($request,$id);
+        return $this->bookService->update($request, $id);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * delete Book
      */
     public function destroy(string $id)
     {

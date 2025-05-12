@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -22,12 +23,12 @@ class BookRequest extends FormRequest
     {
         return [
             //
-            'title'     => 'required|string|max:255',
-            'author'    => 'nullable|string|max:255',
-            'isbn'      => 'nullable|string|max:255',
+            'title' => 'required|string|max:255',
+            'author' => 'nullable|string|max:255',
+            'isbn' => 'nullable|string|max:255',
             'remaining' => 'integer',
-            'uuid'=>'nullable|uuid',
-            'status'    => 'in:available,borrowed',
+            'uuid' => 'nullable|uuid',
+            'status' => 'in:available,borrowed',
         ];
     }
 }

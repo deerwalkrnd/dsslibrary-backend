@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('roll_number')->nullable();
             $table->rememberToken();
             $table->boolean('change_password_status')->default(false);
-            $table->enum('role', [ 'admin', 'student'])->default('student');
+            $table->enum('role', ['admin', 'student'])->default('student');
             $table->timestamps();
         });
 

@@ -24,12 +24,12 @@ class LoginRequest extends FormRequest
         if ($this->has('roll_number')) {
             return [
                 'roll_number' => 'required|string',
-                'password'    => 'required|string',
+                'password' => 'required|string',
             ];
         }
 
         return [
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required|string',
         ];
     }

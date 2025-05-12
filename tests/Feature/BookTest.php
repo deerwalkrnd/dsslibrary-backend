@@ -9,14 +9,16 @@ use Tests\TestCase;
 class BookTest extends TestCase
 {
     use HasFactory,RefreshDatabase;
+
     protected $faker;
+
     /**
      * A basic feature test example.
      */
     public function test_book_can_be_created()
     {
         $this->actingAs(\App\Models\User::factory()->create());
-        $data = ['title' => 'Test Book', 'author' => 'Jane Doe','uuid' => '78909'];
+        $data = ['title' => 'Test Book', 'author' => 'Jane Doe', 'uuid' => '78909'];
         $response = $this->post(route('books.store'), $data);
         $response->assertStatus(201);
         $this->assertDatabaseHas('books', $data);
@@ -41,7 +43,7 @@ class BookTest extends TestCase
         $this->actingAs(\App\Models\User::factory()->create());
         $book = \App\Models\Book::factory()->create();
 
-        $updatedData = ['title' => 'Updated Title', 'author' => 'Updated Author', 'uuid'=>'9807'];
+        $updatedData = ['title' => 'Updated Title', 'author' => 'Updated Author', 'uuid' => '9807'];
 
         $response = $this->put(route('books.update', $book), $updatedData);
 
@@ -55,9 +57,8 @@ class BookTest extends TestCase
         $book = \App\Models\Book::factory()->create();
 
         $response = $this->delete(route('books.destroy', $book));
-        $response->assertStatus(200); 
+        $response->assertStatus(200);
 
         $this->assertDatabaseMissing('books', ['id' => $book->id]);
     }
-
 }

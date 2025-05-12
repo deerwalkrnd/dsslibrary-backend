@@ -15,6 +15,8 @@ interface BorrowBookRepositoryInterface
     public function delete(int $id): bool;
 
     public function find(int $id): ?BorrowRecord;
-    public function getBooksBorrowedByUser(int $userId,int $perPage=10);
-    public function getBooksBorrowed(int $perPage=10);
+
+    public function getBooksBorrowedByUser(int $userId, int $perPage = 10);
+
+    public function getBooksBorrowed(int $perPage = 10);
 }

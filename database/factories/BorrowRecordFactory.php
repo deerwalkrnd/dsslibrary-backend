@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Book;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BorrowRecord>
@@ -20,8 +20,8 @@ class BorrowRecordFactory extends Factory
     {
         return [
             //
-            'book_id' => Book::factory(),  
-            'user_id' => User::factory(),  
+            'book_id' => Book::factory(),
+            'user_id' => User::factory(),
             'checkout_date' => $this->faker->date(),
         ];
     }
