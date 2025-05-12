@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Services;
 
 use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\GoogleAuthRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\UpdateStudentRequest;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,17 +15,18 @@ use Throwable;
 
 class UserService
 {
-    public function __construct(protected UserRepositoryInterface $userRepository) {}
+    public function __construct(protected UserRepositoryInterface $userRepository)
+    {}
 
     public function register(RegisterRequest $request)
     {
         $data = $request->validated();
 
         $user = $this->userRepository->createUser([
-            'name' => $data['name'],
+            'name'        => $data['name'],
             'roll_number' => $data['roll_number'],
-            'password' => $data['password'] ?? 'password',
-            'role' => $data['role'] ?? 'student',
+            'password'    => $data['password'] ?? 'password',
+            'role'        => $data['role'] ?? 'student',
         ]);
 
         $token = $user->createToken('my-token')->plainTextToken;
@@ -38,7 +39,7 @@ class UserService
     public function login(LoginRequest $request)
     {
         $fields = $request->validated();
-        $user = $this->userRepository->getUserForLogin($fields);
+        $user   = $this->userRepository->getUserForLogin($fields);
 
         if (! $user || $fields['password'] !== $user->password) {
             return response(['message' => 'Wrong credentials'], 401);
@@ -47,15 +48,24 @@ class UserService
 
         return response()->json([
             'token' => $token,
-            'Type' => 'Bearer',
-            'role' => $user->role,
+            'Type'  => 'Bearer',
+            'role'  => $user->role,
         ]);
     }
 
-    public function showStudents()
+    public function showStudents(Request $request)
     {
-        $user = $this->userRepository->get();
+        $perPage = (int) $request->get('perPage', 10);
+        $user    = $this->userRepository->get($perPage);
 
+        return response()->json($user);
+    }
+
+    public function searchStudents(Request $request)
+    {
+        $perPage = (int) $request->get('perPage', 10);
+        $search  = $request->input('search');
+        $user    = $this->userRepository->search($perPage, $search);
         return response()->json($user);
     }
 
@@ -85,7 +95,7 @@ class UserService
         return Socialite::driver('google')->redirect();
     }
 
-    public function edit(RegisterRequest $request)
+    public function edit(UpdateStudentRequest $request)
     {
         $user = $this->userRepository->findById($request->id);
 
@@ -135,14 +145,14 @@ class UserService
             return response()->json([
                 'success' => true,
                 'message' => 'Login successful',
-                'user' => $user,
-                'token' => $token,
+                'user'    => $user,
+                'token'   => $token,
             ]);
         } catch (Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Google authentication failed.',
-                'error' => $e->getMessage(),
+                'error'   => $e->getMessage(),
             ], 500);
         }
     }

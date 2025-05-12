@@ -6,6 +6,7 @@ use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\GoogleAuthRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\SearchRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -39,9 +40,13 @@ class AuthController extends Controller
         return $this->userService->login($request);
     }
 
-    public function showStudents()
+    public function showStudents(Request $request)
     {
-        return $this->userService->showStudents();
+        return $this->userService->showStudents($request);
+    }
+
+    public function searchStudents(SearchRequest $request){
+        return $this->userService->searchStudents($request);
     }
 
     public function changePassword(ChangePasswordRequest $request)

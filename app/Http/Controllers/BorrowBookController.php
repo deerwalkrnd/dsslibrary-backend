@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CheckInRequest;
 use App\Http\Requests\CheckOutRequest;
+use App\Http\Requests\SearchRequest;
 use App\Services\BorrowBookService;
 use Illuminate\Http\Request;
 
@@ -32,5 +33,17 @@ class BorrowBookController extends Controller
     public function allBooks(Request $request)
     {
         return $this->borrowBookService->allbooks($request);
+    }
+
+    public function searchRecords(SearchRequest $request){
+        return $this->borrowBookService->searchRecords($request);
+    }
+
+    public function getOverdueBooks(Request $request){
+        return $this->borrowBookService->getOverdueBooks($request);
+    }
+
+    public function searchOverdueBooks(SearchRequest $request){
+        return $this->borrowBookService->searchOverdueBooks($request);
     }
 }

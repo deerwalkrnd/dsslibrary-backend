@@ -39,8 +39,14 @@ class BookRepository implements BookRepositoryInterface
         return $book;
     }
 
+    public function search(int $perPage = 10,string $search)
+    {
+        $books = Book::where('title', 'like', "$search%")->latest()->paginate($perPage);
+        return $books;
+    }
+
     public function paginate(int $perPage = 10): LengthAwarePaginator
     {
-        return Book::orderBy('created_at', 'desc')->paginate($perPage);
+        return Book::latest()->paginate($perPage);
     }
 }

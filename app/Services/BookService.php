@@ -111,4 +111,12 @@ class BookService
             return response()->json(['message' => 'Unexpected error'], 500);
         }
     }
+
+    public function searchBooks(Request $request)
+    {
+        $perPage = (int) $request->get('perPage', 10);
+        $search  = $request->input('search');
+        $book    = $this->bookRepository->search($perPage, $search);
+        return response()->json($book);
+    }
 }

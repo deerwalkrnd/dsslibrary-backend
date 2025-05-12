@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookRequest;
+use App\Http\Requests\SearchRequest;
 use App\Services\BookService;
 use Illuminate\Http\Request;
 
@@ -36,6 +37,10 @@ class BookController extends Controller
     {
         //
         return $this->bookService->create($request);
+    }
+
+    public function searchBooks(SearchRequest $request){
+        return $this->bookService->searchBooks($request);
     }
 
     /**
