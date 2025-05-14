@@ -19,41 +19,57 @@ class AuthController extends Controller
     {
         $this->userService = $userService;
     }
-
+    /**
+     * AddUser
+     */
     public function register(RegisterRequest $request)
     {
         return $this->userService->register($request);
     }
-
+    /**
+     * EditUser
+     */
     public function editStudent(UpdateStudentRequest $request)
     {
         return $this->userService->edit($request);
     }
-
+    /**
+     * DeleteUser
+     */
     public function deleteStudent(Request $request)
     {
         return $this->userService->delete($request);
     }
-
+    /**
+     * Login
+     */
     public function login(LoginRequest $request)
     {
         return $this->userService->login($request);
     }
-
+    /**
+     * GetStudents
+     */
     public function showStudents(Request $request)
     {
         return $this->userService->showStudents($request);
     }
-
+    /**
+     * SearchStudents
+     */
     public function searchStudents(SearchRequest $request){
         return $this->userService->searchStudents($request);
     }
-
+    /**
+     * ChangePassword
+     */
     public function changePassword(ChangePasswordRequest $request)
     {
         return $this->userService->changePassword($request);
     }
-
+    /**
+     * Logout
+     */
     public function userLogout(Request $request)
     {
         return $this->userService->logout($request);
@@ -68,7 +84,9 @@ class AuthController extends Controller
     {
         return $this->userService->handleGoogleCallback($request);
     }
-
+    /**
+     * GoogleLogout
+     */
     public function googleLogout()
     {
         return $this->userService->googleLogout();

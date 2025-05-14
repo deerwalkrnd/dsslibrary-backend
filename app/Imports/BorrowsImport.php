@@ -19,7 +19,7 @@ class BorrowsImport implements ToCollection, WithHeadingRow
             try {
                 
                 $validator = Validator::make($row->toArray(), [
-                    'name'           => 'required|string|exists:users,name',
+                    'email'           => 'required|string|exists:users,email',
                     'title'          => 'required|string|exists:books,title',
                     'checkout_date'  => 'required|date',
                     'checkin_date'   => 'nullable|date|after_or_equal:checkout_date',
@@ -27,15 +27,15 @@ class BorrowsImport implements ToCollection, WithHeadingRow
                 
 
                 if ($validator->fails()) {
-                    Log::warning('Validation failed for borrow record row', $row->toArray());
+                    dd($row->toArray(),$validator->errors()->all());
                     continue;
                 }
 
-                $user = User::where('name', $row['name'])->first();
+                $user = User::where('email', $row['email'])->first();
                 $book = Book::where('title', $row['title'])->first();
 
                 if (!$user || !$book) {
-                    Log::error("User or Book not found: " . $row['name'] . " / " . $row['title']);
+                    Log::error("User or Book not found: " . $row['email'] . " / " . $row['title']);
                     continue;
                 }
 
@@ -46,7 +46,7 @@ class BorrowsImport implements ToCollection, WithHeadingRow
                     'checkin_date'  => $row['checkin_date'],
                 ]);
             } catch (\Exception $e) {
-                Log::error('Import error on borrow record: ' . $e->getMessage(), ['row' => $row]);
+                dd('Import error on borrow record: ' . $e->getMessage(), ['row' => $row]);
             }
         }
     }
