@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Repositories;
 
 use App\Models\BorrowRecord;
@@ -38,16 +37,42 @@ class BorrowBookRepository implements BorrowBookRepositoryInterface
         return $borrowRecord;
     }
 
+    public function search(int $perPage = 10, string $search)
+    {
+        $books = BorrowRecord::whereHas('book', function ($query) use ($search) {
+            $query->where('title', 'like', "$search%");
+        })->with('book','user')->latest()->paginate($perPage);
+        return $books;
+    }
+
     public function getBooksBorrowedByUser(int $userId, int $perPage = 10)
     {
-        return BorrowRecord::with('book')
+        return BorrowRecord::with('book','user')
             ->where('user_id', $userId)
             ->paginate($perPage);
     }
 
     public function getBooksBorrowed(int $perPage = 10)
     {
-        return BorrowRecord::with('book')
+        return BorrowRecord::with('book')->latest()
             ->paginate($perPage);
+    }
+
+    public function getOverdueBooks(int $perPage = 10)
+    {
+       return BorrowRecord::with('book','user')
+        ->whereNull('checkin_date')
+        ->where('checkout_date', '<=', now()->subDays(15))
+        ->latest()
+        ->paginate($perPage);
+    }
+
+    public function searchOverdueBooks(int $perPage = 10, string $search)
+    {
+        $books = BorrowRecord::whereHas('book', function ($query) use ($search) {
+            $query->where('title', 'like', "$search%");
+        })->whereNull('checkin_date')
+        ->where('checkout_date', '<=', now()->subDays(15))->with('book','user')->latest()->paginate($perPage);
+        return $books;
     }
 }

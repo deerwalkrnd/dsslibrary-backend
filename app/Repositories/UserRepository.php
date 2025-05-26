@@ -23,12 +23,19 @@ class UserRepository implements UserRepositoryInterface
             : User::where('email', $fields['email'])->first();
     }
 
-    public function get()
+    public function get(int $perPage = 10)
     {
-        $users = User::where('role', 'student')->get();
+        $users = User::where('role', 'student')->latest()->paginate($perPage);
 
         return $users;
     }
+
+    public function search(int $perPage = 10,string $search)
+    {
+        $users = User::where('name', 'like', "$search%")->where('role', 'student')->latest()->paginate($perPage);
+        return $users;
+    }
+
 
     public function updatePassword(User $user, string $newPassword): void
     {

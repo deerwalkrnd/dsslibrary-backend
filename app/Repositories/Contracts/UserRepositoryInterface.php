@@ -16,7 +16,9 @@ interface UserRepositoryInterface
 
     public function findById(string $id);
 
-    public function get();
+    public function get(int $perPage=10);
+
+    public function search(int $perPage=10, string $search);
 
     public function update($user, array $data);
 

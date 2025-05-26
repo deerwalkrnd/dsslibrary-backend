@@ -23,15 +23,24 @@ Route::middleware(['auth:sanctum', 'restrictRole:admin'])->group(function () {
     Route::get('/users', [AuthController::class, 'show']);
     Route::get('/students', [AuthController::class, 'showStudents']);
 
+    Route::get('/search/students', [AuthController::class, 'searchStudents'])->name('students.search');
+
     Route::put('/students/{id}', [AuthController::class, 'editStudent'])->name('students.update');
     Route::delete('/students/{id}', [AuthController::class, 'deleteStudent'])->name('students.destroy');
 
-    Route::resource('books', BookController::class)->names('books')->except('index');
+    Route::resource('books', BookController::class)->names('books')->except('index','create','edit');
 
     Route::post('/borrow/checkout', [BorrowBookController::class, 'checkout'])->name('checkout');
     Route::post('/borrow/checkin/{id}', [BorrowBookController::class, 'checkin'])->name('checkin');
     Route::get('/borrow-records', [BorrowBookController::class, 'allBooks'])->name('allBooks');
+
+    Route::get('/overdue-books', [BorrowBookController::class, 'getOverdueBooks'])->name('overdue');
+    Route::get('/search/overdue-books', [BorrowBookController::class, 'searchOverdueBooks'])->name('searchOverdue');
 });
 
+
 Route::get('/books', [BookController::class, 'index'])->name('books.get');
+Route::get('/search/books', [BookController::class, 'searchBooks'])->name('books.search');
+
 Route::middleware(['auth:sanctum'])->get('/borrow-records/my-user', [BorrowBookController::class, 'myBooks'])->name('myBooks');
+Route::get('/search/records', [BorrowBookController::class, 'searchRecords'])->name('searchBooks');

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CheckOutRequest extends FormRequest
+class SearchRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,7 @@ class CheckOutRequest extends FormRequest
     {
         return [
             //
-            'book_id' => 'required|exists:books,id',
-            'user_id' => 'required|exists:users,id',
-            'checkout_date' => 'date|required',
+            'search'=>'string|required'
         ];
     }
 }

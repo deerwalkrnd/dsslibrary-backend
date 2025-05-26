@@ -1,8 +1,8 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BookRequest;
+use App\Http\Requests\SearchRequest;
 use App\Services\BookService;
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class BookController extends Controller
     ) {}
 
     /**
-     * getMany Books
+     * All
      */
     public function index(Request $request)
     {
@@ -30,16 +30,23 @@ class BookController extends Controller
     }
 
     /**
-     * post Book
+     * Post
      */
     public function store(BookRequest $request)
     {
         //
         return $this->bookService->create($request);
     }
+    /**
+     * Search
+    */
+    public function searchBooks(SearchRequest $request)
+    {
+        return $this->bookService->searchBooks($request);
+    }
 
     /**
-     * findOne Book
+     * FindOne
      */
     public function show(string $id)
     {
@@ -48,7 +55,7 @@ class BookController extends Controller
     }
 
     /**
-     * updateBook
+     * Update
      */
     public function edit(string $id)
     {
@@ -57,7 +64,7 @@ class BookController extends Controller
     }
 
     /**
-     * update Book
+     * Update
      */
     public function update(BookRequest $request, string $id)
     {
@@ -66,7 +73,7 @@ class BookController extends Controller
     }
 
     /**
-     * delete Book
+     * Delete
      */
     public function destroy(string $id)
     {

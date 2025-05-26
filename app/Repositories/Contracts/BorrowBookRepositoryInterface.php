@@ -16,7 +16,13 @@ interface BorrowBookRepositoryInterface
 
     public function find(int $id): ?BorrowRecord;
 
+    public function search(int $perPage=10, string $search);
+
     public function getBooksBorrowedByUser(int $userId, int $perPage = 10);
 
     public function getBooksBorrowed(int $perPage = 10);
+
+    public function getOverdueBooks(int $perPage = 10);
+    
+    public function searchOverdueBooks(int $perPage = 10, string $search);
 }

@@ -43,10 +43,14 @@ class BorrowBookService
         try {
             $data = $request->validated();
             $record = $this->borrowBookRepository->find($id);
-
+            $book=$record->book;
+            $book->remaining += 1;
+            $book->status = 'available';
+            $book->save();
             if (! $record || $record->checkin_date) {
                 return response()->json(['message' => 'Invalid or already returned'], 400);
             }
+            
             $updated = $this->borrowBookRepository->update($data, $id);
 
             if (! $updated) {
@@ -87,6 +91,42 @@ class BorrowBookService
             $books = $this->borrowBookRepository->getBooksBorrowed($perPage);
 
             return response()->json($books);
+        } catch (Exception $e) {
+            Log::error('Error getting books '.$e->getMessage());
+
+            return response()->json(['message' => 'Could not fetch books'], 500);
+        }
+    }
+    public function searchRecords(Request $request)
+    {
+        $perPage = (int) $request->get('perPage', 10);
+        $search  = $request->input('search');
+        $records    = $this->borrowBookRepository->search($perPage, $search);
+        return response()->json($records);
+    }
+
+    public function getOverdueBooks(Request $request)
+    {
+        try {
+            $perPage = (int) $request->get('perPage', 10);
+            $books = $this->borrowBookRepository->getOverdueBooks($perPage);
+
+            return response()->json($books);
+        } catch (Exception $e) {
+            Log::error('Error getting books '.$e->getMessage());
+
+            return response()->json(['message' => 'Could not fetch books'], 500);
+        }
+    }
+
+    public function searchOverdueBooks(Request $request)
+    {
+        try {
+            $perPage = (int) $request->get('perPage', 10);
+            $search  = $request->input('search');
+            $records    = $this->borrowBookRepository->search($perPage, $search);
+
+            return response()->json($records);
         } catch (Exception $e) {
             Log::error('Error getting books '.$e->getMessage());
 

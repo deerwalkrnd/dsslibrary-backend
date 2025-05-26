@@ -1,8 +1,8 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class BookRequest extends FormRequest
 {
@@ -21,14 +21,16 @@ class BookRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules=[
             //
-            'title' => 'required|string|max:255',
-            'author' => 'nullable|string|max:255',
-            'isbn' => 'nullable|string|max:255',
+            'title'     => 'required|string|max:255',
+            'author'    => 'nullable|string|max:255',
+            'isbn'      => ['string',$this->isMethod('post') ? 'unique:books,isbn' : 'nullable',],
             'remaining' => 'integer',
-            'uuid' => 'nullable|uuid',
-            'status' => 'in:available,borrowed',
+            'uuid'      => 'nullable|uuid',
+            'status'    => 'in:available,borrowed',
         ];
+        
+        return $rules;
     }
 }
