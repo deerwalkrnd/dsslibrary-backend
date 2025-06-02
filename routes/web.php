@@ -28,7 +28,3 @@ Route::get('/import-form/books', function () {
 Route::get('/import-form/borrows', function () {
     return view('borrows-import');
 });
-
-Route::post('/import/users', [BulkUploadController::class, 'usersImport'])->name('users.import');
-Route::post('/import/books', [BulkUploadController::class, 'booksImport'])->name('books.import');
-Route::post('/import/borrows', [BulkUploadController::class, 'borrowsImport'])->name('borrows.import');

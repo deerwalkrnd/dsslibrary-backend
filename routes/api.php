@@ -6,6 +6,7 @@ use App\Http\Controllers\BorrowBookController;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BulkUploadController;
 
 RateLimiter::for('api', function ($request) {
     return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
@@ -36,6 +37,11 @@ Route::middleware(['auth:sanctum', 'restrictRole:admin'])->group(function () {
 
     Route::get('/overdue-books', [BorrowBookController::class, 'getOverdueBooks'])->name('overdue');
     Route::get('/search/overdue-books', [BorrowBookController::class, 'searchOverdueBooks'])->name('searchOverdue');
+
+    
+    Route::post('/import/users', [BulkUploadController::class, 'usersImport'])->name('users.import');
+    Route::post('/import/books', [BulkUploadController::class, 'booksImport'])->name('books.import');
+    Route::post('/import/borrows', [BulkUploadController::class, 'borrowsImport'])->name('borrows.import');
 });
 
 

@@ -36,6 +36,7 @@ class UsersImport implements ToCollection, WithHeadingRow
                 'password' => $row['password'],
                 'role'     => 'student',
             ]);
+
         }
     }
 }
